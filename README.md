@@ -25,3 +25,4 @@ monitor.run(skip_first_batch=False)
 - 搜索订阅号并关注
 - 取消关注订阅号
 - 批量添加好友
+- I dont know, send me email: yuhao6066@gmail.com
