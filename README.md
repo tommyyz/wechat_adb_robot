@@ -7,7 +7,7 @@
 在使用各种xposed, ipad/mac协议, web协议, 微信hook战斗无果后，走回了使用自动化脚本的老路。ADB永不被封！
 
 ### Quick Start
-监控微信订阅号/公众号更新，并获取更新的文章列表
+监控微信订阅号/公众号更新（须已关注目标），并获取更新的文章列表
 ```python
 from wechat_adb_robot.feed_monitor import WeChatFeedMonitor
 
@@ -24,3 +24,4 @@ monitor.run(skip_first_batch=False)
 ### Todo List
 - 搜索订阅号并关注
 - 取消关注订阅号
+- 批量添加好友
