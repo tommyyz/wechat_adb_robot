@@ -59,6 +59,7 @@
     
     ...
     ```
+    ![example.gif](https://github.com/tommyyz/wechat_adb_robot/raw/master/example.gif)
 
 ## Done List
 - 监控订阅号列表更新，并获取更新的文章列表
