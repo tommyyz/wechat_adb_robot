@@ -8,12 +8,13 @@
 
 ## Quick Start
 #### 准备工作
-确保命令`adb`可用，使用`adb devices`获取`serial`（手机序列号）：
-```shell
-$ adb devices
-List of devices attached
-fe57c975        device
-```
+1. usb连接安卓设备，（开发者模式下）启用调试，在设备上点击允许调试。
+2. 确保命令[adb](https://developer.android.com/studio/command-line/adb)可用，使用`adb devices`获取`serial`（手机序列号）
+    ```shell
+    $ adb devices
+    List of devices attached
+    fe57c975        device
+    ```
 
 #### 订阅号监控
 1. 安装clipper
