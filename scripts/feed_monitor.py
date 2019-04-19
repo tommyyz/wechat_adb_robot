@@ -4,8 +4,6 @@ import re
 import time
 from wechat_adb_robot.core.robot import ADBRobot
 
-logger = logging.getLogger("feed_monitor")
-
 
 class FeedItem():
     def __init__(self, node):
@@ -26,10 +24,11 @@ class FeedArticleItem():
 
 
 class WeChatFeedMonitor():
-    def __init__(self, serial, result_callback=lambda x:x):
+    def __init__(self, serial, result_callback=lambda x:x, logger=None):
         self.bot = ADBRobot(serial)
         self.result_callback = result_callback
         self.last_feed_list = []
+        self.logger = logger if logger else logging.getLogger("feed_monitor")
     
     def run(self, skip_first_batch=True):
         """
@@ -37,6 +36,7 @@ class WeChatFeedMonitor():
         """
         loop_index = 0
         while True:
+            self.logger.info("开始第{}次循环".format(loop_index))
             # 亮屏
             self.bot.screen_on()
 
@@ -88,7 +88,7 @@ class WeChatFeedMonitor():
         if bounds:
             self.bot.click_bounds(bounds)
         else:
-            logger.error("找不到订阅号栏，请确认订阅号栏在微信首页")
+            self.logger.error("找不到订阅号栏，请确认订阅号栏在微信首页")
 
     def get_feed_list(self):
         """
@@ -132,7 +132,8 @@ class WeChatFeedMonitor():
         """
         # 获取最近更新的订阅号名单
         newly_update_feed_list = self.get_feed_list_and_find_updates(set_new=True)
-        logger.info("最新更新的公众号：{}".format([_.account_name for _ in newly_update_feed_list]))
+        self.logger.info("最新更新的公众号：{}".format(
+            [_.account_name for _ in newly_update_feed_list]))
         
         for feed_item in newly_update_feed_list:
             # 进入订阅号详情页
@@ -151,7 +152,7 @@ class WeChatFeedMonitor():
                     self.bot.click_bounds(more_button_bounds)
                     time.sleep(2)
                 else:
-                    logger.error("找不到更多按钮，文章有问题？")
+                    self.logger.error("找不到更多按钮，文章有问题？")
 
                 # 点击复制链接
                 copy_link_btn_bounds = self.bot.get_node_bounds("text", "复制链接")
@@ -162,11 +163,11 @@ class WeChatFeedMonitor():
                     # 获取剪贴板并输出
                     self.output_result(self.bot.get_clipboard_text())
                 else:
-                    logger.error("找不到复制链接按钮，文章有问题？")
+                    self.logger.error("找不到复制链接按钮，文章有问题？")
 
                 self.bot.go_back()
             self.bot.go_back()
 
     def output_result(self, url):
-        logger.info("输出结果：{}".format(url))
+        self.logger.info("输出结果：{}".format(url))
         self.result_callback(url)
