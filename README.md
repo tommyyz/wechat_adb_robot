@@ -4,11 +4,11 @@
 基于adb的微信自动化脚本库，纯adb项目，支持各种可以使用adb的操作系统。由于业务需要，主要针对公众号/订阅号的监控/抓取/操作
 
 ## Why WAR
-在使用各种xposed, ipad/mac协议, web协议, 微信hook战斗无果后，走回了使用自动化脚本的老路。ADB永不被封！
+在使用各种xposed, ipad/mac协议, web协议, 微信hook精疲力竭后，走回了模拟人手的老路。模拟人手永不被封！
 
 ## Quick Start
 #### 准备工作
-1. usb连接安卓设备，（开发者模式下）启用调试，在设备上点击允许调试。
+1. usb连接安卓设备，（开发者模式下）启用调试，在设备的开发者模式页勾选允许调试，允许模拟点击。
 2. 确保命令[adb](https://developer.android.com/studio/command-line/adb)可用，使用`adb devices`获取`serial`（手机序列号）
     ```shell
     $ adb devices
@@ -21,7 +21,7 @@
     ```
     $ adb -s fe57c975 install apks/clipper1.2.1.apk
     ```
-2. 监控订阅号/公众号更新，并获取更新的文章列表
+2. 监控订阅号/公众号更新（须已关注），并获取更新的文章列表
     ```python
     import logging, sys
     from wechat_adb_robot.scripts.feed_monitor import WeChatFeedMonitor
@@ -67,3 +67,4 @@
 ## Todo List
 - 搜索订阅号并关注
 - 取消关注订阅号
+- Tell me: yuhao6066@gmail.com
