@@ -10,9 +10,10 @@ logger = logging.getLogger("adb_robot")
 
 
 class ADBRobot:
-    def __init__(self, serial, temp_dump_file='/sdcard/wechat_dump.xml'):
+    def __init__(self, serial, temp_dump_file='/sdcard/wechat_dump.xml', adb_path='adb'):
         self.serial = serial
         self.temp_dump_file = temp_dump_file
+        self.adb_path = adb_path
 
     def shell(self, cmd=None, decode=True):
         """
@@ -21,7 +22,7 @@ class ADBRobot:
         :return:
         """
         logger.debug("running shell: {}".format(cmd))
-        proc = subprocess.Popen("{} -s {} shell {}".format("adb", self.serial, cmd),
+        proc = subprocess.Popen("{} -s {} shell {}".format(self.adb_path, self.serial, cmd),
                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         stdout, stderr = proc.communicate()
         if decode:
@@ -79,6 +80,8 @@ class ADBRobot:
                 self.shell("uiautomator dump {}".format(self.temp_dump_file))
                 dumps = self.shell("cat {}".format(self.temp_dump_file), decode=False)
                 logger.debug(dumps.decode('utf-8'))
+                if not dumps.startswith(b'<'):
+                    raise ValueError(dumps)
                 node = etree.XML(dumps)
                 break
             except Exception as e:

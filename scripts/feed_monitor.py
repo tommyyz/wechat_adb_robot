@@ -24,8 +24,8 @@ class FeedArticleItem():
 
 
 class WeChatFeedMonitor():
-    def __init__(self, serial, result_callback=lambda x:x, logger=None):
-        self.bot = ADBRobot(serial)
+    def __init__(self, serial, result_callback=lambda x: x, adb_path='adb', logger=None):
+        self.bot = ADBRobot(serial, adb_path=adb_path)
         self.result_callback = result_callback
         self.last_feed_list = []
         self.logger = logger if logger else logging.getLogger("feed_monitor")

@@ -20,6 +20,8 @@ def new_stream_logger():
 
 if __name__ == "__main__":
     # Assume we already have device[serial=fe57c975] attached and has clipper installed
-    monitor = WeChatFeedMonitor(
-        serial="fe57c975", result_callback=push_result, logger=new_stream_logger())
+    monitor = WeChatFeedMonitor(serial="fe57c975",
+                                result_callback=push_result,
+                                adb_path="adb",
+                                logger=new_stream_logger())
     monitor.run(skip_first_batch=False)
