@@ -60,10 +60,9 @@
     ```
     ![example.gif](https://github.com/tommyyz/wechat_adb_robot/raw/master/example.gif)
 
-## Done List
-- 监控订阅号列表更新，并获取更新的文章列表
-
-## Todo List
-- 搜索订阅号并关注
-- 取消关注订阅号
-- Tell me: yuhao6066@gmail.com
+## Done & TODO List
+- [x] 监控订阅号列表更新，并获取更新的文章列表
+- [ ] 搜索订阅号并关注
+- [ ] 取消关注订阅号
+- [ ] 批量关注好友
+- [ ] Tell me: yuhao6066@gmail.com
