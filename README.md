@@ -1,11 +1,14 @@
-# WAR: 基于adb的微信自动化脚本库
+WAR: 基于adb的微信自动化脚本库
+===
+![python](https://img.shields.io/badge/python-2.7%20%7C%203.5%20%7C%203.6-blue.svg)
+![license](https://img.shields.io/badge/license-MIT%20License-lightgrey.svg)
 
-## What is WAR? & Why WAR?
+# What is WAR? & Why WAR?
 基于[adb](https://developer.android.com/studio/command-line/adb)的微信自动化脚本库，纯模拟点击项目，支持安卓设备+各种可以使用adb的操作系统。由于业务需要，目前开发主要针对公众号/订阅号的监控/抓取/操作，未来可以加入更多其他脚本，欢迎PR
 
 在使用各种xposed, ipad/mac协议, web协议, 微信hook精疲力竭后，走回了模拟人手的老路。模拟人手永不被封！
 
-## Quick Start
+# Quick Start
 #### 准备工作
 1. usb连接安卓设备，（开发者模式下）启用调试，在设备的开发者模式页勾选允许调试，允许模拟点击。
 2. 确保命令[adb](https://developer.android.com/studio/command-line/adb)可用，使用`adb devices`获取`serial`（手机序列号）
@@ -60,7 +63,7 @@
     ```
     ![example.gif](https://github.com/tommyyz/wechat_adb_robot/raw/master/example.gif)
 
-## Done & TODO List
+# Done List
 - [x] 监控订阅号列表更新，并获取更新的文章列表
 - [ ] 搜索订阅号并关注
 - [ ] 取消关注订阅号
