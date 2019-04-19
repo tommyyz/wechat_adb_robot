@@ -30,9 +30,12 @@ class WeChatFeedMonitor():
         self.last_feed_list = []
         self.logger = logger if logger else logging.getLogger("feed_monitor")
     
-    def run(self, skip_first_batch=True):
+    def run(self, skip_first_batch=True, sleep_interval=30):
         """
-        循环执行
+        循环执行脚本
+        由于微信的一些机制，盯着订阅号页不动是不会有更新的，所以本脚本会熄屏开屏以模仿人的操作，试下来感觉良好
+        :param skip_first_batch: 是否保存并跳过第一次截取的最新订阅列表
+        :param sleep_interval: 熄屏时间
         """
         loop_index = 0
         while True:
@@ -73,7 +76,7 @@ class WeChatFeedMonitor():
             self.bot.screen_off()
 
             loop_index += 1
-            time.sleep(30)
+            time.sleep(sleep_interval)
     
     def ensure_wechat_front(self):
         """
