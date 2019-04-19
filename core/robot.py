@@ -58,6 +58,15 @@ class ADBRobot:
     
     def go_home(self):
         self.shell('input keyevent 3')
+    
+    def force_home(self):
+        """
+        强制归零状态
+        """
+        self.go_home()
+        for _ in range(3):
+            self.go_back()
+        self.go_home()
 
     def go_back(self):
         self.shell('input keyevent 4')

@@ -49,6 +49,7 @@ class WeChatFeedMonitor():
 
             # 打开微信首页
             self.ensure_wechat_front()
+            time.sleep(1)
 
             # 进入订阅号页
             self.go_feed_page()
@@ -62,7 +63,7 @@ class WeChatFeedMonitor():
                 self.feed_monitoring()
 
             # 返回桌面
-            self.bot.go_home()
+            self.bot.force_home()
             time.sleep(1)
 
             # 熄屏
@@ -76,7 +77,9 @@ class WeChatFeedMonitor():
         保证微信在前台，并在首页
         """
         self.bot.run_app("com.tencent.mm")
-        for i in range(5):
+        for _ in range(6):
+            # 可能不在首页，按返回键6次基本可以确定重新打开为首页
+            # TODO: 使用uidump检查是否在微信首页
             self.bot.go_back()
         self.bot.run_app("com.tencent.mm")
 
@@ -84,6 +87,7 @@ class WeChatFeedMonitor():
         """
         进入订阅号列表页
         """
+        # TODO: 增加如果当屏找不到，滚屏继续找的逻辑
         bounds = self.bot.get_node_bounds("text", "订阅号")
         if bounds:
             self.bot.click_bounds(bounds)
