@@ -15,16 +15,21 @@ List of devices attached
 fe57c975        device
 ```
 
-#### 监控订阅号/公众号更新，并获取更新的文章列表
-```python
-from wechat_adb_robot.feed_monitor import WeChatFeedMonitor
+#### 订阅号监控
+1. 安装clipper
+    ```
+    $ adb -s fe57c975 install apks/clipper1.2.1.apk
+    ```
+2. 监控订阅号/公众号更新，并获取更新的文章列表
+    ```python
+    from wechat_adb_robot.feed_monitor import WeChatFeedMonitor
 
-def push_result(url):
-    print("Got new article url", url)
+    def push_result(url):
+        print("Got new article url", url)
 
-monitor = WeChatFeedMonitor(serial="fe57c975", result_callback=push_result)
-monitor.run(skip_first_batch=False)
-```
+    monitor = WeChatFeedMonitor(serial="fe57c975", result_callback=push_result)
+    monitor.run(skip_first_batch=False)
+    ```
 
 
 ## Done List
