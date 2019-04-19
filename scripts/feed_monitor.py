@@ -62,6 +62,9 @@ class WeChatFeedMonitor():
                 # 执行订阅列表监听
                 self.feed_monitoring()
 
+            # 返回微信首页
+            self.bot.go_back()
+
             # 返回桌面
             self.bot.force_home()
             time.sleep(1)
