@@ -38,7 +38,7 @@
         return logger
 
     monitor = WeChatFeedMonitor(serial="fe57c975", result_callback=push_result, logger=new_stream_logger())
-    monitor.run(skip_first_batch=False)
+    monitor.run(skip_first_batch=False)  # skip_first_batch=True 可以跳过首次循环的更新识别
     ```
 3. 运行结果：
     ```
