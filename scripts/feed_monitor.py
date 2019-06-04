@@ -130,7 +130,8 @@ class WeChatFeedMonitor():
         获得订阅号详情页内的最新文章列表，通常会在底部
         """
         page_node = self.bot.uidump_and_get_node()
-        content_boxes = page_node.xpath('//node[@resource-id="com.tencent.mm:id/an6"]')
+        content_boxes = page_node.xpath(
+            '//node[@class="android.widget.FrameLayout"]/node[@class="android.widget.FrameLayout"]/node[@class="android.widget.ListView"]/node[@class="android.widget.RelativeLayout"]/node[@class="android.widget.LinearLayout"]/node[@class="android.widget.LinearLayout"]')
         if len(content_boxes) == 0:
             return []
         last_content_box = content_boxes[len(content_boxes) - 1]
@@ -147,16 +148,23 @@ class WeChatFeedMonitor():
         
         for feed_item in newly_update_feed_list:
             # 进入订阅号详情页
-            self.bot.click_bounds(feed_item.bounds)  
+            self.logger.info("进入订阅号[{}]详情页 ...".format(feed_item.account_name))
+            self.bot.click_bounds(feed_item.bounds)
+
+            # 获得订阅号的最新文章列表
+            feed_articles = self.get_feed_articles_in_account_page()
+            self.logger.info("订阅号的最新文章列表的文章个数: {}".format(len(feed_articles)))
 
             # 查找订阅号的最新文章列表
-            for feed_article_item in self.get_feed_articles_in_account_page():
+            for feed_article_item in feed_articles:
 
                 # 点击文章详情页
+                self.logger.debug("进入文章详情页 ...")
                 self.bot.click_bounds(feed_article_item.bounds)
                 time.sleep(2)
                 
                 # 点击更多
+                self.logger.debug("点击更多 ...")
                 more_button_bounds = self.bot.get_node_bounds("content-desc", "更多")
                 if more_button_bounds:
                     self.bot.click_bounds(more_button_bounds)
@@ -165,6 +173,7 @@ class WeChatFeedMonitor():
                     self.logger.error("找不到更多按钮，文章有问题？")
 
                 # 点击复制链接
+                self.logger.debug("点击复制链接 ...")
                 copy_link_btn_bounds = self.bot.get_node_bounds("text", "复制链接")
                 if copy_link_btn_bounds:
                     self.bot.click_bounds(copy_link_btn_bounds)
@@ -175,6 +184,7 @@ class WeChatFeedMonitor():
                 else:
                     self.logger.error("找不到复制链接按钮，文章有问题？")
 
+                self.logger.debug("返回订阅号页 ...")
                 self.bot.go_back()
             self.bot.go_back()
 
