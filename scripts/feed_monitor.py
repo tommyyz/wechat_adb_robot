@@ -94,11 +94,32 @@ class WeChatFeedMonitor():
         进入订阅号列表页
         """
         # TODO: 增加如果当屏找不到，滚屏继续找的逻辑
-        bounds = self.bot.get_node_bounds("text", "订阅号")
-        if bounds:
-            self.bot.click_bounds(bounds)
+        
+        dumps = self.bot.uidump_and_get_node()
+        bounds672 = self.bot.get_node_bounds("text", "订阅号", dumps=dumps)  # 6.7.3以前版本
+        bounds673 = self.bot.get_node_bounds("text", "订阅号消息", dumps=dumps)  # 6.7.3以后版本
+
+        if bounds672:
+            self.bot.click_bounds(bounds672)
+        elif bounds673:
+            self.bot.click_bounds(bounds673)
+            time.sleep(2)
+            # 如果是6.7.3以后版本，还需点击右上角三条杠更多按钮，进入列表页
+            boundsMore = self.bot.get_node_bounds("content-desc", "订阅号")  # 6.7.3以前版本
+            if boundsMore:
+                self.bot.click_bounds(boundsMore)
+            else:
+                self.logger.error("找不到订阅号消息页右上角的更多按钮")
         else:
             self.logger.error("找不到订阅号栏，请确认订阅号栏在微信首页")
+    
+    def get_more_button_on_673_feed_page(self):
+        """
+        获得订阅号列表页内的第一屏订阅号列表
+        """
+        page_node = self.bot.uidump_and_get_node()
+        return page_node.xpath(
+            '//node[@class="android.widget.ListView"]/node/node[@index="1"]')
 
     def get_feed_list(self):
         """

@@ -57,6 +57,10 @@ WAR: 基于adb的微信自动化脚本库
     ```
     ![example.gif](https://github.com/tommyyz/wechat_adb_robot/raw/master/example.gif)
 
+# Update Info
+- 2019.06.27: 增加对6.7.3版本后订阅号页新界面（下图左边屏幕）的支持
+  ![compare_v672_v673.jpeg](https://github.com/tommyyz/wechat_adb_robot/raw/master/compare_v672_v673.jpeg)
+
 # TODO List
 - [x] 监控订阅号列表更新，并获取更新的文章列表
 - [ ] 搜索订阅号并关注

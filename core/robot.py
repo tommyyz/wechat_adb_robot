@@ -9,18 +9,38 @@ import subprocess
 logger = logging.getLogger("adb_robot")
 
 
+class WindowManager:
+    def __init__(self, wm_shell):
+        self.wm_shell = wm_shell
+        self.width, self.height = self.get_size()
+    
+    def get_size(self):
+        o = self.wm_shell("size")
+        m = re.match(".*?(\d+)x(\d+).*?", o)
+        if not m:
+            raise ValueError("无法获取窗口宽高: {}".format(o))
+        x, y = m.groups()
+        return int(x), int(y)
+
+    def set_size(self, width, height):
+        self.wm_shell("size {}x{}".format(width, height))
+
+
 class ADBRobot:
     def __init__(self, serial, temp_dump_file='/sdcard/wechat_dump.xml', adb_path='adb'):
         self.serial = serial
         self.temp_dump_file = temp_dump_file
         self.adb_path = adb_path
+        self.wm = WindowManager(self.wm_shell)
 
-    def shell(self, cmd=None, decode=True):
+    def shell(self, cmd="", decode=True):
         """
         运行指定的cmd命令
         :param cmd:
         :return:
         """
+        if not cmd:
+            return ""
         logger.debug("running shell: {}".format(cmd))
         proc = subprocess.Popen("{} -s {} shell {}".format(self.adb_path, self.serial, cmd),
                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
@@ -33,6 +53,9 @@ class ADBRobot:
         else:
             return stdout
         return stdout
+    
+    def wm_shell(self, wm_cmd=""):
+        return self.shell("wm {}".format(wm_cmd))
 
     def is_app_installed(self, app_name):
         return len(self.shell("pm list packages | grep {}".format(app_name))) > 0
@@ -76,6 +99,24 @@ class ADBRobot:
 
     def tap(self, x, y):
         self.shell("input tap {} {}".format(x, y))
+
+    def swipe_down(self):
+        """
+        向下滑半屏
+        """
+        self.shell("input swipe {} {} {} {}".format(self.wm.width / 2,
+                                                    self.wm.height / 4,
+                                                    self.wm.width / 2,
+                                                    self.wm.height / 4 * 3,))
+    
+    def swipe_up(self):
+        """
+        向上滑半屏
+        """
+        self.shell("input swipe {} {} {} {}".format(self.wm.width / 2,
+                                                    self.wm.height / 4 * 3,
+                                                    self.wm.width / 2,
+                                                    self.wm.height / 4,))
 
     def uidump_and_get_node(self, retry_times=3):
         """
